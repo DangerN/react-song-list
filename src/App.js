@@ -1,6 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 
-class App extends Component {
+import SongList from './Components/SongList'
+import AddSong from './Components/AddSong'
+
+export default class App extends Component {
     state = {
         songs: [{
             id: 1,
@@ -10,22 +13,20 @@ class App extends Component {
             title: "For Whom The Bell Tolls"
         }]
     }
-    getSongs() {
-        return this.state.songs.map(song => {
-            return <li key={song.id}>
-                <div>
-                    <h2>{song.title}</h2>
-                </div>
-            </li>
-        })
+    addSong = event => {
+      event.preventDefault()
+      const formData = new FormData(event.target)
+      this.setState({ songs: [...this.state.songs, {
+        id: this.state.length - 1,
+        title: formData.get('title')
+      }]})
     }
     render(){
       return (
         <div className="App">
-          <ul>{this.getSongs()}</ul>
+          <AddSong addSong={this.addSong} />
+          <SongList songs={this.state.songs} />
         </div>
-      );
+      )
     }
 }
-
-export default App;
